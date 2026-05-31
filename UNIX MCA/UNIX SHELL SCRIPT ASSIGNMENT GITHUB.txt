@@ -1,0 +1,441 @@
+UNIX SHELL SCRIPT ASSIGNMENT 
+
+QN 1 Greet User According to System Time
+
+#!/bin/bash
+
+hour=$(date +%H)
+
+if [ $hour -ge 5 ] && [ $hour -lt 12 ]
+then
+    echo "GOOD MORNING"
+elif [ $hour -ge 12 ] && [ $hour -lt 17 ]
+then
+    echo "GOOD AFTERNOON"
+elif [ $hour -ge 17 ] && [ $hour -lt 21 ]
+then
+    echo "GOOD EVENING"
+else
+    echo "GOOD NIGHT"
+fi
+
+QN 2 Rename Uppercase Files to Lowercase
+
+#!/bin/bash
+
+for file in *
+do
+    lower=$(echo "$file" | tr 'A-Z' 'a-z')
+    mv "$file" "$lower" 2>/dev/null
+done
+
+QN 3 Count Lines and Words
+
+#!/bin/bash
+
+echo "Enter text (Ctrl+D to stop):"
+wc
+
+QN 4 Display Command Line Arguments
+
+#!/bin/bash
+
+for arg in "$@"
+do
+    echo "$arg"
+done
+
+QN 5 Display User Information from /etc/passwd
+
+#!/bin/bash
+
+echo "Enter username:"
+read user
+
+grep "^$user:" /etc/passwd
+
+QN6 Store File Details in backup
+
+#!/bin/bash
+
+ls -l > backup
+echo "Saved in backup file"
+
+QN7 Count Positive and Negative Numbers
+
+#!/bin/bash
+
+pos=0
+neg=0
+
+for num in "$@"
+do
+    if [ $num -ge 0 ]
+    then
+        pos=$((pos+1))
+    else
+        neg=$((neg+1))
+    fi
+done
+
+echo "Positive = $pos"
+echo "Negative = $neg"
+
+QN8 Save and Display who Output
+
+who | tee users.txt
+
+QN9 Sort Input File into Output File
+
+ sort IN > OUT
+
+QN10 Copy One File to Another
+#!/bin/bash
+
+echo "Source file:"
+read f1
+
+echo "Destination file:"
+read f2
+
+cp $f1 $f2
+echo "Copied"
+
+QN11. Logged In Users
+
+#!/bin/bash
+
+echo "Logged in users:"
+who
+
+QN 12. lower.sh
+
+#!/bin/bash
+
+for file in "$1"/*
+do
+    base=$(basename "$file")
+    lower=$(echo "$base" | tr 'A-Z' 'a-z')
+
+    if [ -e "$1/$lower" ]
+    then
+        echo "Warning: Not overwriting $lower"
+    else
+        mv "$file" "$1/$lower"
+    fi
+done
+
+QN 13. Compile and Execute All C Files
+
+#!/bin/bash
+
+for file in *.c
+do
+    gcc $file -o temp
+    ./temp
+done
+
+QN14. Factorial Using Function
+
+#!/bin/bash
+
+fact()
+{
+    n=$1
+    f=1
+
+    while [ $n -gt 1 ]
+    do
+        f=$((f*n))
+        n=$((n-1))
+    done
+
+    echo $f
+}
+
+fact $1
+
+QN 15. Sum of Array Elements
+
+#!/bin/bash
+
+echo "Number of elements:"
+read n
+
+sum=0
+
+for((i=0;i<n;i++))
+do
+    read arr[$i]
+    sum=$((sum+arr[i]))
+done
+
+echo "Sum = $sum"
+
+QN16. Words Whose First and Last Character Same
+
+#!/bin/bash
+
+for word in $(cat FILE)
+do
+    first=${word:0:1}
+    last=${word: -1}
+
+    if [ "$first" = "$last" ]
+    then
+        echo $word
+    fi
+done
+ 
+QN 17 AWK Word Frequency ≥ 5
+
+{
+for(i=1;i<=NF;i++)
+count[$i]++
+}
+
+END{
+for(word in count)
+if(count[word]>=5)
+print word,count[word]
+}
+
+QN18. Delete .tmp Older Than 15 Days
+
+#!/bin/bash
+
+find /root -name "*.tmp" -atime +15 -delete
+
+QN19. Depict Orphan Process
+ 
+#!/bin/bash
+
+(
+sleep 20 &
+exit
+)
+
+QN20. Display PID of init Process
+ 
+#!/bin/bash
+
+ps -e | grep init
+
+QN21. Employee Report Using AWK
+
+BEGIN{
+print "Employee Information"
+}
+
+{
+if($3<500)
+c=$3*0.05
+else
+c=$3*0.10
+
+ts+=$3
+tc+=c
+n++
+
+print $1,$2,$3,$4,c
+}
+
+END{
+print "Employees =",n
+print "Total Salary =",ts
+print "Total Commission =",tc
+}
+
+QN22. Gross Salary
+
+#!/bin/bash
+
+read basic
+
+if [ $basic -lt 1500 ]
+then
+hra=$((basic/10))
+da=$((basic*90/100))
+else
+hra=500
+da=$((basic*98/100))
+fi
+
+gross=$((basic+hra+da))
+
+echo "Gross Salary = $gross"
+
+QN23. Merge Two Arrays Using Function
+
+#!/bin/bash
+
+merge()
+{
+    arr=("${a[@]}" "${b[@]}")
+    echo "${arr[@]}"
+}
+
+a=(1 2 3)
+b=(4 5 6)
+
+merge
+
+QN24 AWK Count Word Occurrence
+
+#!/bin/bash
+
+echo "Enter word:"
+read word
+
+echo "Enter filename:"
+read file
+
+awk -v w="$word" '
+{
+for(i=1;i<=NF;i++)
+if($i==w)
+c++
+}
+END{
+print c
+}' $file
+
+QN25. Output of Script
+
+a="*"
+b=a
+echo $b
+
+QN26. Output of Script
+
+a=*
+echo $a
+echo "a"
+
+QN27. Output of
+echo $$
+
+QN28. Output of Script
+
+IFS=+
+set economists+are+seldom+right
+echo $3 $4 $#
+
+QN29. Output of Script
+
+a=b
+b=c=d=c
+
+echo $b
+echo $d
+
+QN30. Menu Driven Program
+
+#!/bin/bash
+
+echo "1.LS"
+echo "2.DATE"
+echo "3.PROCESS"
+echo "4.USERS"
+echo "5.PWD"
+echo "6.EXIT"
+
+read ch
+
+case $ch in
+1) ls;;
+2) date;;
+3) ps;;
+4) who;;
+5) pwd;;
+6) exit;;
+*) echo "Invalid Option";;
+esac
+
+QN31. Check Valid User
+
+#!/bin/bash
+
+read user
+
+if grep "^$user:" /etc/passwd > /dev/null
+then
+    echo "Valid User"
+else
+    echo "Invalid User"
+fi
+
+QN32. Create File of Logged In Users
+
+#!/bin/bash
+
+who > users.txt
+
+echo "Saved"
+
+QN33. Sort Two Files and Merge
+
+#!/bin/bash
+
+read f1
+read f2
+read out
+
+sort $f1 > temp1
+sort $f2 > temp2
+
+cat temp1 temp2 > $out
+
+QN34. Employee Record Menu Program
+
+#!/bin/bash
+
+while true
+do
+echo "1.Search"
+echo "2.Display"
+echo "3.Append"
+echo "4.Exit"
+
+read ch
+
+case $ch in
+
+1)
+read eno
+grep "^$eno" emp.txt
+;;
+
+2)
+awk '{print $1,$3}' emp.txt
+;;
+
+3)
+echo "Enter record:"
+read rec
+echo $rec >> emp.txt
+;;
+
+4)
+exit
+;;
+esac
+done
+
+QN35. Count Blanks in a Sentence
+
+#!/bin/bash
+
+echo "Enter sentence:"
+read line
+
+count=$(echo "$line" | grep -o " " | wc -l)
+
+echo "Blank Spaces = $count"
+
+
+
+
+
+
+
